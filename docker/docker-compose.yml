@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  www:
+    build: .
+    container_name: 'www'
+    hostname: 'www'
+    ports:
+      - "80:80"
+    volumes:
+      - ../flutterLumen:/var/www/html
+    extra_hosts:
+      - "flutterlumen.com:127.0.0.1"
+  database:
+    image: mariadb:10.7.1
+    container_name: 'mariadb'
+    hostname: 'mariadb'
+    command: --default-authentication-plugin=mysql_native_password
+    restart: 'always'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+      - database:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: flutterlumen
+      MARIADB_USER: root
+      MARIADB_PASSWORD: secret
+      MARIADB_ROOT_PASSWORD: secret
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1.1
+    hostname: 'phpmyadmin'
+    container_name: 'phpmyadmin'
+    restart: 'always'
+    links:
+      - database:db
+    environment:
+      PMA_HOST: 'mariadb'
+    ports:
+      - 8000:80
+volumes:
+  database:
