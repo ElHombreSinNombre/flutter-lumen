@@ -26,8 +26,12 @@ We can access to the web in localhost (127.0.0.1) or in flutterlumen.com.
 
 ### Frontend
 
-Flutter
+**[Flutter]()**
 
 ### Backend
 
-Lumen
+**[Lumen]()**
+
+- Launch
+
+      php artisan migrate:fresh --seed
