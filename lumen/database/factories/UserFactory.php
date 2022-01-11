@@ -28,10 +28,12 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => Carbon::now(),
             'password' => app('hash')->make('test'),
             'language' => $this->faker->randomElement(['es', 'en']),
-            'remember_token' => Str::random(10),
+            'city' => $this->faker->city(),
+            'latitude' => $this->faker->latitude(),
+            'longitude' => $this->faker->longitude(),
+
         ];
     }
 
