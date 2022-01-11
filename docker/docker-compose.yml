@@ -33,7 +33,7 @@ services:
     container_name: 'phpmyadmin'
     restart: 'always'
     links:
-      - database:db
+      - datdocker contaabase:db
     environment:
       PMA_HOST: 'mariadb'
     ports:

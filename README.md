@@ -26,4 +26,8 @@ We can access to the web in localhost (127.0.0.1) or in flutterlumen.com.
 
 ### Frontend
 
+Flutter
+
 ### Backend
+
+Lumen
