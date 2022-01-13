@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:map/services/user.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -11,12 +13,34 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   late GoogleMapController mapController;
   final List<Marker> _markers = <Marker>[];
-  final LatLng _center = const LatLng(45.521563, -122.677433);
+  late LatLng _center = const LatLng(0, 0);
 
   @override
   void initState() {
     super.initState();
-    _markers.add(Marker(markerId: const MarkerId('Test'), position: _center));
+    getLocation();
+    getMarkers();
+  }
+
+  Future getMarkers() async {
+    UserService().getAllExample().then((value) {
+      setState(() {
+        for (var element in value) {
+          _markers.add(Marker(
+              markerId: MarkerId(element['id'].toString()),
+              position: LatLng(double.parse(element['address']['geo']['lat']),
+                  double.parse(element['address']['geo']['lng']))));
+        }
+      });
+    });
+  }
+
+  Future getLocation() async {
+    final location = Location();
+    var currentLocation = await location.getLocation();
+    setState(() {
+      _center = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -36,6 +60,10 @@ class _MapPageState extends State<MapPage> {
       ),
     );
 
-    return SafeArea(child: Scaffold(body: map));
+    return SafeArea(
+        child: Scaffold(
+            body: _markers.isNotEmpty
+                ? map
+                : const Center(child: CircularProgressIndicator())));
   }
 }

@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:map/models/user.dart';
 
 class UserService {
-  Future<void> getAllExample() async {
-    var url = Uri.parse('http://jsonplaceholder.typicode.com/albums');
+  Future<List> getAllExample() async {
+    var url = Uri.parse('http://jsonplaceholder.typicode.com/users');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);

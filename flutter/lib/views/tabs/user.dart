@@ -9,48 +9,45 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  final _items = List<String>.generate(20, (i) => "Item ${i + 1}");
 
   @override
   Widget build(BuildContext context) {
-    final list = ListView.builder(
-      itemCount: _items.length,
-      itemBuilder: (context, index) {
-        final item = _items[index];
-        return Dismissible(
-          key: Key(item),
-          direction: DismissDirection.startToEnd,
-          onDismissed: (direction) {
-            setState(() {
-              _items.removeAt(index);
-            });
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('$item dismissed')));
-          },
-          background: Container(
-              alignment: AlignmentDirectional.centerStart,
-              color: Colors.red,
-              child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Icon(Icons.delete, color: Colors.white))),
-          child: ListTile(
-            title: Text(item),
-          ),
-        );
-      },
-    );
-
-    /*final builder = FutureBuilder(
+    final builder = FutureBuilder<List>(
       future: UserService().getAllExample(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Text(snapshot.data.toString());
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final item = snapshot.data![index];
+              return Dismissible(
+                key: Key(index.toString()),
+                direction: DismissDirection.startToEnd,
+                onDismissed: (direction) {
+                  setState(() {
+                    item.removeAt(index);
+                  });
+                },
+                background: Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    color: Colors.red,
+                    child: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Icon(Icons.delete, color: Colors.white))),
+                child: ListTile(
+                  leading: const Icon(Icons.person),
+                  subtitle: Text(item["address"]['street']),
+                  title: Text(item["name"]),
+                ),
+              );
+            },
+          );
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return Center(child: Text('${snapshot.error}'));
         }
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       },
-    );*/
+    );
 
     return Scaffold(
         body: RefreshIndicator(
@@ -58,7 +55,7 @@ class _UserPageState extends State<UserPage> {
               UserService().getAllExample();
             },
             child: SafeArea(
-              child: list,
+              child: builder,
             )));
   }
 }
