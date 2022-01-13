@@ -1,6 +1,6 @@
 ## Guide
 
-Install **[Node](https://nodejs.org/es/)**, **[PHP](https://www.php.net/downloads)**, **[Composer](https://getcomposer.org/)** and **[Docker Desktop](https://docker.com/products/docker-desktop/).**
+Install **[Flutter](https://flutter.dev/)**, **[PHP](https://www.php.net/downloads)**, **[Composer](https://getcomposer.org/)** and **[Docker Desktop](https://docker.com/products/docker-desktop/).**
 
 Open **Docker Desktop**, then with CMD launch this commands
 
@@ -26,11 +26,20 @@ We can access to the web in localhost (127.0.0.1) or in flutterlumen.com.
 
 ### Frontend
 
-**[Flutter]()**
+**[Flutter](https://flutter.dev/)**
+
+In
+
+> /flutter/android/app/src/main/AndroidManifest.xml
+
+change *android:value="API"* for you **Google Maps** API key.
+
+To get a key you must to go to **[Google Cloud Platform](https://console.cloud.google.com/)** and create project. Then follow [this](https://developers.google.com/maps/documentation/javascript/get-api-key) guide.
+
 
 ### Backend
 
-**[Lumen]()**
+**[Lumen](https://lumen.laravel.com/)**
 
 - Launch
 
