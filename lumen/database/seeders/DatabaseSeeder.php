@@ -15,6 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
+        User::insert([
+            'name' => 'Admin',
+            'email' => 'flutterlumen@test.com',
+            'password' => bcrypt('test'),
+            'language' => 'es',
+            'city' => 'Bilbao',
+            'latitude' => '43.26271',
+            'longitude' => '-2.92528',
+        ]);
+
+        User::factory(9)->create();
     }
 }
