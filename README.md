@@ -45,7 +45,7 @@ To get a key you must to go to **[Google Cloud Platform](https://console.cloud.g
 
       php artisan migrate:fresh --seed
 
-## Credentials
+#### Credentials
 
 - Name: Admin
 - Password: test
