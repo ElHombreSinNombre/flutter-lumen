@@ -36,8 +36,10 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        $user = User::findOrFail($request->id)->update($request->all());
-        return response()->json($user);
+        User::findOrFail($request->id)->update($request->all());
+        if ($request->ajax()) {
+            return response()->json('User updated');
+        }
     }
 
     /**
@@ -49,8 +51,10 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return response()->json($user);
+        User::create($request->all());
+        if ($request->ajax()) {
+            return response()->json('User created');
+        }
     }
 
     /**
@@ -61,7 +65,7 @@ class UserController extends Controller
      */
     public function delete(Request $request)
     {
-        $user = User::findOrFail($request->id)->delete();
-        return response()->json($user);
+        User::findOrFail($request->id)->delete();
+        return response()->json('User deleted');
     }
 }

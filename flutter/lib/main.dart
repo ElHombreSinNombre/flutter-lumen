@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'views/tabs.dart';
+import 'views/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +24,6 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: TabsPage());
+    return const Scaffold(body: LoginPage());
   }
 }

@@ -10,6 +10,11 @@ class FormPage extends StatefulWidget {
 
 class _FormPage extends State<FormPage> {
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -103,7 +108,7 @@ class _FormPage extends State<FormPage> {
     ]);
 
     return Scaffold(
-      body: SafeArea(child: SingleChildScrollView(child:form)),
+      body: SafeArea(child: Center(child: form)),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,

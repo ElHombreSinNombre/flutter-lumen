@@ -1,4 +1,4 @@
-FROM php:8.1.0-apache
+FROM php:8.1.1-apache
 ARG DEBIAN_FRONTEND=noninteractive
 WORKDIR /var/www
 RUN docker-php-ext-install mysqli

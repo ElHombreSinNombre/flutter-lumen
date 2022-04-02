@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:map/services/user.dart';
+import 'dart:math';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -23,16 +24,36 @@ class _MapPageState extends State<MapPage> {
   }
 
   Future getMarkers() async {
-    UserService().getAllExample().then((value) {
+    UserService().getAll().then((value) {
       setState(() {
         for (var element in value) {
           _markers.add(Marker(
-              markerId: MarkerId(element['id'].toString()),
-              position: LatLng(double.parse(element['address']['geo']['lat']),
-                  double.parse(element['address']['geo']['lng']))));
+            markerId: MarkerId(element.id.toString()),
+            position: LatLng(element.latitude, element.longitude),
+            infoWindow: InfoWindow(
+              title: element.name,
+            ),
+            icon: BitmapDescriptor.defaultMarker,
+          ));
         }
       });
+    }).catchError((e) {
+      debugPrint(e);
     });
+  }
+
+  LatLngBounds getBounds(List<Marker> markers) {
+    var lngs = markers.map<double>((m) => m.position.longitude).toList();
+    var lats = markers.map<double>((m) => m.position.latitude).toList();
+    double topMost = lngs.reduce(max);
+    double leftMost = lats.reduce(min);
+    double rightMost = lats.reduce(max);
+    double bottomMost = lngs.reduce(min);
+    LatLngBounds bounds = LatLngBounds(
+      northeast: LatLng(rightMost, topMost),
+      southwest: LatLng(leftMost, bottomMost),
+    );
+    return bounds;
   }
 
   Future getLocation() async {
@@ -45,6 +66,10 @@ class _MapPageState extends State<MapPage> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    setState(() {
+      controller
+          .animateCamera(CameraUpdate.newLatLngBounds(getBounds(_markers), 50));
+    });
   }
 
   @override
@@ -56,7 +81,7 @@ class _MapPageState extends State<MapPage> {
       markers: Set<Marker>.of(_markers),
       initialCameraPosition: CameraPosition(
         target: _center,
-        zoom: 11.0,
+        zoom: 8.0,
       ),
     );
 
