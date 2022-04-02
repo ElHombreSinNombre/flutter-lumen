@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import '/views/tabs.dart';
+import 'package:map/services/user.dart';
 
 class FormPage extends StatefulWidget {
-  const FormPage({Key? key}) : super(key: key);
+  final String id;
+  const FormPage({Key? key, required this.id}) : super(key: key);
 
   @override
   _FormPage createState() => _FormPage();
 }
 
 class _FormPage extends State<FormPage> {
-
   @override
   void initState() {
+    UserService().edit(widget.id).then((value) => print(value.city));
     super.initState();
   }
 
+  final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -25,7 +27,6 @@ class _FormPage extends State<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final form = Column(mainAxisSize: MainAxisSize.min, children: [
       Text('New user', style: Theme.of(context).textTheme.headline4),
       Padding(
@@ -108,15 +109,22 @@ class _FormPage extends State<FormPage> {
     ]);
 
     return Scaffold(
-      body: SafeArea(child: Center(child: form)),
+      body: SafeArea(child: Center(child: Form(key: _formKey, child: form))),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const TabsPage()),
-        ),
+        onPressed: () {
+          save(_formKey);
+          Navigator.pop(context);
+        },
         tooltip: 'Save',
         child: const Icon(Icons.check),
       ),
     );
+  }
+}
+
+void save(_formKey) {
+  if (_formKey.currentState!.validate()) {
+    final formData = _formKey.currentState.save();
+    UserService().create(formData);
   }
 }

@@ -13,7 +13,7 @@ class TabsPage extends StatefulWidget {
 class _TabsPage extends State<TabsPage> {
   int _index = 0;
   final List _childs = [
-    const MapPage(),
+    const UserPage(),
     const UserPage(),
   ];
 
@@ -38,7 +38,10 @@ class _TabsPage extends State<TabsPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const FormPage()),
+            MaterialPageRoute(
+                builder: (context) => const FormPage(
+                      id: "",
+                    )),
           );
         },
         tooltip: 'New user',
